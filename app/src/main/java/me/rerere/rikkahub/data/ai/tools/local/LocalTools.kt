@@ -37,7 +37,7 @@ class LocalTools(
     val chartDisplayTool by lazy { buildChartDisplayTool() }
 
     val imageGenerationTool by lazy {
-        buildImageGenerationTool(mediaGenerationManager, filesManager, okHttpClient, settingsStore)
+        buildImageGenerationTool(context, mediaGenerationManager, filesManager, okHttpClient, settingsStore)
     }
 
     fun getTools(options: List<LocalToolOption>): List<Tool> {

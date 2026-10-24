@@ -19,6 +19,7 @@ import me.rerere.ai.ui.limitContext
 import me.rerere.rikkahub.R
 import me.rerere.rikkahub.data.ai.prompts.buildMemoryPrompt
 import me.rerere.rikkahub.data.ai.tools.ChatToolFactory
+import me.rerere.rikkahub.data.ai.transformers.AttachedImagePathTransformer
 import me.rerere.rikkahub.data.ai.transformers.Base64ImageToLocalFileTransformer
 import me.rerere.rikkahub.data.ai.transformers.DocumentAsPromptTransformer
 import me.rerere.rikkahub.data.ai.transformers.InputMessageTransformer
@@ -85,6 +86,9 @@ class ChatRequestFactory(
         PromptInjectionTransformer,
         PlaceholderTransformer,
         DocumentAsPromptTransformer,
+        // 排在 OCR 之前：模型不支持图片输入时 OCR 会把图片换成文字，路径标签要留下来
+        // 供 create_image 的 reference_images 使用
+        AttachedImagePathTransformer,
         OcrTransformer,
         templateTransformer,
         WorkspaceReminderTransformer(workspaceRepository),

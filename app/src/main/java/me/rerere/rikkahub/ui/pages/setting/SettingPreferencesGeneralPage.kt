@@ -104,6 +104,13 @@ fun SettingPreferencesGeneralPage(vm: SettingVM = koinViewModel()) {
                             )
                         },
                     )
+                }
+            }
+
+            item {
+                CardGroup(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
                     item(
                         headlineContent = { Text(stringResource(R.string.setting_display_page_show_message_jumper_title)) },
                         supportingContent = { Text(stringResource(R.string.setting_display_page_show_message_jumper_desc)) },
@@ -142,6 +149,13 @@ fun SettingPreferencesGeneralPage(vm: SettingVM = koinViewModel()) {
                             )
                         },
                     )
+                }
+            }
+
+            item {
+                CardGroup(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
                     item(
                         headlineContent = { Text(stringResource(R.string.setting_display_page_use_app_icon_style_loading_indicator_title)) },
                         supportingContent = {
@@ -213,6 +227,13 @@ fun SettingPreferencesGeneralPage(vm: SettingVM = koinViewModel()) {
                             )
                         },
                     )
+                }
+            }
+
+            item {
+                CardGroup(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
                     item(
                         headlineContent = { Text(stringResource(R.string.setting_display_page_skip_crop_image_title)) },
                         supportingContent = { Text(stringResource(R.string.setting_display_page_skip_crop_image_desc)) },
@@ -259,6 +280,13 @@ fun SettingPreferencesGeneralPage(vm: SettingVM = koinViewModel()) {
                             },
                         )
                     }
+                }
+            }
+
+            item {
+                CardGroup(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
                     item(
                         headlineContent = { Text(stringResource(R.string.setting_display_page_volume_key_scroll_title)) },
                         supportingContent = { Text(stringResource(R.string.setting_display_page_volume_key_scroll_desc)) },

@@ -173,6 +173,13 @@ fun SettingPreferencesUIPage(vm: SettingVM = koinViewModel()) {
                             }
                         }
                     )
+                }
+            }
+
+            item {
+                CardGroup(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
                     item(
                         headlineContent = { Text(stringResource(R.string.setting_display_page_chat_list_model_icon_title)) },
                         supportingContent = { Text(stringResource(R.string.setting_display_page_chat_list_model_icon_desc)) },
@@ -221,6 +228,13 @@ fun SettingPreferencesUIPage(vm: SettingVM = koinViewModel()) {
                             )
                         },
                     )
+                }
+            }
+
+            item {
+                CardGroup(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
                     item(
                         headlineContent = { Text(stringResource(R.string.setting_display_page_show_thinking_content_title)) },
                         supportingContent = { Text(stringResource(R.string.setting_display_page_show_thinking_content_desc)) },
@@ -269,6 +283,13 @@ fun SettingPreferencesUIPage(vm: SettingVM = koinViewModel()) {
                             )
                         },
                     )
+                }
+            }
+
+            item {
+                CardGroup(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
                     item(
                         headlineContent = { Text(stringResource(R.string.setting_display_page_chat_font_family_title)) },
                         supportingContent = {

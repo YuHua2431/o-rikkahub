@@ -72,7 +72,7 @@ internal fun Modifier.chatInputHaze(
 }
 
 /** 顶栏毛玻璃从顶栏高度的这个比例开始向底部边缘淡出（1f = 完全不淡出） */
-private const val HazeFadeOutStart = 0.6f
+private const val HazeFadeOutStart = 0.5f
 
 /**
  * 顶栏毛玻璃的下缘淡出蒙版：效果层 alpha 从顶栏顶部到 [HazeFadeOutStart] 保持满效果，

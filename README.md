@@ -2,11 +2,6 @@
   <img src="docs/icon.png" alt="App Icon" width="100" />
   <h1>o-rikkahub</h1>
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/rikkahub/rikkahub)
-[![Ask DeepWiki](https://img.shields.io/badge/zread.ai-blue?style=flat&logo=readthedocs)](https://zread.ai/rikkahub/rikkahub)
-
-The DeepWiki and zread.ai badges above link to documentation of the original RikkaHub project.
-
 A native Android LLM chat client that supports switching between different providers for
 conversations 🤖💬
 

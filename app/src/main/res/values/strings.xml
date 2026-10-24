@@ -1531,6 +1531,7 @@
   <string name="media_kind_image">Image</string>
   <string name="media_provider_type_aliyun">Alibaba Cloud Model Studio</string>
   <string name="media_provider_type_volcengine">Volcengine Ark</string>
+  <string name="media_provider_type_zhipu">Zhipu</string>
   <string name="setting_media_page_add_model">Add model</string>
   <string name="setting_media_page_add_provider">Add provider</string>
   <string name="setting_media_page_asset_storage">Asset Storage</string>

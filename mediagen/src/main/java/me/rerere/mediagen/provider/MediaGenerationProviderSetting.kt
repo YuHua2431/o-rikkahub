@@ -149,6 +149,38 @@ sealed class MediaGenerationProviderSetting {
     }
 
     @Serializable
+    @SerialName("zhipu")
+    data class Zhipu(
+        override val id: Uuid = Uuid.random(),
+        override val name: String = "Zhipu",
+        override val apiKey: String = "",
+        override val baseUrl: String = "https://open.bigmodel.cn/api/paas/v4",
+        override val models: List<MediaGenerationModel> = listOf(
+            MediaGenerationModel(modelId = "cogview-4-250304", kind = MediaKind.IMAGE),
+            MediaGenerationModel(modelId = "cogvideox-3", kind = MediaKind.VIDEO),
+        ),
+    ) : MediaGenerationProviderSetting() {
+        override val supportedKinds: Set<MediaKind>
+            get() = setOf(MediaKind.IMAGE, MediaKind.VIDEO)
+
+        override fun copyProvider(
+            id: Uuid,
+            name: String,
+            apiKey: String,
+            baseUrl: String,
+            models: List<MediaGenerationModel>,
+        ): MediaGenerationProviderSetting {
+            return this.copy(
+                id = id,
+                name = name,
+                apiKey = apiKey,
+                baseUrl = baseUrl,
+                models = models,
+            )
+        }
+    }
+
+    @Serializable
     @SerialName("minimax")
     data class MiniMax(
         override val id: Uuid = Uuid.random(),
@@ -223,6 +255,7 @@ sealed class MediaGenerationProviderSetting {
                 OpenAI::class,
                 Aliyun::class,
                 Volcengine::class,
+                Zhipu::class,
                 MiniMax::class,
                 OpenRouter::class,
             )

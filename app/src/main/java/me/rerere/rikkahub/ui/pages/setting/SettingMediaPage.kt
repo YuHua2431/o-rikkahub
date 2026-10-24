@@ -334,6 +334,7 @@ private fun AddMediaProviderButton(onAdd: (MediaGenerationProviderSetting) -> Un
             { MediaGenerationProviderSetting.OpenAI() },
             { MediaGenerationProviderSetting.Aliyun() },
             { MediaGenerationProviderSetting.Volcengine() },
+            { MediaGenerationProviderSetting.Zhipu() },
             { MediaGenerationProviderSetting.MiniMax() },
             { MediaGenerationProviderSetting.OpenRouter() },
         )

@@ -185,6 +185,15 @@ internal fun MediaGenerationProviderSetting.presets(kind: MediaKind): MediaCreat
             durations = listOf(4, 5, 6, 8, 10),
         )
     }
+
+    // CogView 只接受像素尺寸，下面是各代模型共同推荐的几个取值
+    is MediaGenerationProviderSetting.Zhipu -> when (kind) {
+        MediaKind.IMAGE -> MediaCreationPresets(
+            resolutions = listOf("1024x1024", "768x1344", "864x1152", "1344x768", "1152x864", "1440x720", "720x1440"),
+        )
+        // 适配器只下发模型和提示词，没有可选的参数
+        MediaKind.VIDEO -> MediaCreationPresets()
+    }
 }
 
 private val IMAGE_COUNTS = listOf(1, 2, 3, 4)

@@ -1528,6 +1528,7 @@
   <string name="media_kind_image">圖片</string>
   <string name="media_provider_type_aliyun">阿里雲百鍊</string>
   <string name="media_provider_type_volcengine">火山方舟</string>
+  <string name="media_provider_type_zhipu">智譜清言</string>
   <string name="setting_media_page_add_model">新增模型</string>
   <string name="setting_media_page_add_provider">新增供應商</string>
   <string name="setting_media_page_asset_storage">素材儲存</string>

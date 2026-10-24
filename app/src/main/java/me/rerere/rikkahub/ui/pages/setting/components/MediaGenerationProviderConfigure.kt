@@ -33,6 +33,7 @@ val MediaGenerationProviderSetting.typeName: String
         is MediaGenerationProviderSetting.OpenAI -> "OpenAI"
         is MediaGenerationProviderSetting.Aliyun -> stringResource(R.string.media_provider_type_aliyun)
         is MediaGenerationProviderSetting.Volcengine -> stringResource(R.string.media_provider_type_volcengine)
+        is MediaGenerationProviderSetting.Zhipu -> stringResource(R.string.media_provider_type_zhipu)
         is MediaGenerationProviderSetting.MiniMax -> "MiniMax"
         is MediaGenerationProviderSetting.OpenRouter -> "OpenRouter"
     }

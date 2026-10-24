@@ -1532,6 +1532,7 @@ mDNS 地址：使用 .local 主机名，同一网络中的其他设备可通过�
   <string name="media_kind_image">图像</string>
   <string name="media_provider_type_aliyun">阿里云百炼</string>
   <string name="media_provider_type_volcengine">火山方舟</string>
+  <string name="media_provider_type_zhipu">智谱清言</string>
   <string name="setting_media_page_add_model">添加模型</string>
   <string name="setting_media_page_add_provider">添加提供商</string>
   <string name="setting_media_page_asset_storage">素材存储</string>

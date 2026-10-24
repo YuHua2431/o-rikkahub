@@ -1530,6 +1530,7 @@ mDNS 주소: .local 호스트네임을 사용하며, IP를 몰라도 같은 네�
   <string name="media_kind_image">이미지</string>
   <string name="media_provider_type_aliyun">Alibaba Cloud Model Studio</string>
   <string name="media_provider_type_volcengine">Volcengine Ark</string>
+  <string name="media_provider_type_zhipu">Zhipu</string>
   <string name="setting_media_page_add_model">모델 추가</string>
   <string name="setting_media_page_add_provider">제공자 추가</string>
   <string name="setting_media_page_asset_storage">에셋 저장소</string>

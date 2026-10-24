@@ -14,6 +14,7 @@ import me.rerere.mediagen.provider.providers.minimax.MiniMaxMediaGenerationProvi
 import me.rerere.mediagen.provider.providers.openai.OpenAIMediaGenerationProvider
 import me.rerere.mediagen.provider.providers.openrouter.OpenRouterMediaGenerationProvider
 import me.rerere.mediagen.provider.providers.volcengine.VolcengineMediaGenerationProvider
+import me.rerere.mediagen.provider.providers.zhipu.ZhipuMediaGenerationProvider
 import okhttp3.OkHttpClient
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -24,6 +25,7 @@ class MediaGenerationManager(
     private val openAI = OpenAIMediaGenerationProvider(client)
     private val aliyun = AliyunMediaGenerationProvider(client)
     private val volcengine = VolcengineMediaGenerationProvider(client)
+    private val zhipu = ZhipuMediaGenerationProvider(client)
     private val miniMax = MiniMaxMediaGenerationProvider(client)
     private val openRouter = OpenRouterMediaGenerationProvider(client)
 
@@ -84,6 +86,7 @@ class MediaGenerationManager(
             is MediaGenerationProviderSetting.OpenAI -> openAI
             is MediaGenerationProviderSetting.Aliyun -> aliyun
             is MediaGenerationProviderSetting.Volcengine -> volcengine
+            is MediaGenerationProviderSetting.Zhipu -> zhipu
             is MediaGenerationProviderSetting.MiniMax -> miniMax
             is MediaGenerationProviderSetting.OpenRouter -> openRouter
         }

@@ -70,6 +70,11 @@ fun MediaGenerationProviderSetting.capabilities(kind: MediaKind): MediaGeneratio
             MediaKind.VIDEO -> VOLCENGINE_VIDEO
         }
 
+        is MediaGenerationProviderSetting.Zhipu -> when (kind) {
+            MediaKind.IMAGE -> ZHIPU_IMAGE
+            MediaKind.VIDEO -> ZHIPU_VIDEO
+        }
+
         is MediaGenerationProviderSetting.MiniMax -> when (kind) {
             MediaKind.IMAGE -> null
             MediaKind.VIDEO -> MINIMAX_VIDEO
@@ -185,4 +190,18 @@ private val OPENROUTER_VIDEO = MediaGenerationCapabilities(
     // 两者同时出现时接口不报错，但只按首尾帧生成，参考素材被忽略
     framesExcludeReferences = true,
     requiresRemoteInputs = true,
+)
+
+// CogView 只支持文生图，尺寸直接给像素值，不接受图片输入
+private val ZHIPU_IMAGE = MediaGenerationCapabilities(
+    parameters = setOf(MediaGenerationParameter.RESOLUTION),
+    imageRoles = emptySet(),
+    requiresPrompt = true,
+)
+
+// CogVideoX 目前只下发模型和提示词，分辨率、时长、帧率等参数还没有接进来
+private val ZHIPU_VIDEO = MediaGenerationCapabilities(
+    parameters = emptySet(),
+    imageRoles = emptySet(),
+    requiresPrompt = true,
 )

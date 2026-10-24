@@ -11,6 +11,8 @@ import me.rerere.mediagen.provider.providers.openrouter.OpenRouterImageGeneratio
 import me.rerere.mediagen.provider.providers.openrouter.OpenRouterVideoGeneration
 import me.rerere.mediagen.provider.providers.volcengine.VolcengineImageGeneration
 import me.rerere.mediagen.provider.providers.volcengine.VolcengineVideoGeneration
+import me.rerere.mediagen.provider.providers.zhipu.ZhipuImageGeneration
+import me.rerere.mediagen.provider.providers.zhipu.ZhipuVideoGeneration
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -25,6 +27,7 @@ class MediaGenerationCapabilitiesTest {
         MediaGenerationProviderSetting.OpenAI(),
         MediaGenerationProviderSetting.Aliyun(),
         MediaGenerationProviderSetting.Volcengine(),
+        MediaGenerationProviderSetting.Zhipu(),
         MediaGenerationProviderSetting.MiniMax(),
         MediaGenerationProviderSetting.OpenRouter(),
     )
@@ -44,6 +47,11 @@ class MediaGenerationCapabilitiesTest {
             is MediaGenerationProviderSetting.Volcengine -> when (kind) {
                 MediaKind.IMAGE -> VolcengineImageGeneration(client).buildBody(model, request)
                 MediaKind.VIDEO -> VolcengineVideoGeneration(client).buildCreateBody(model, request)
+            }
+
+            is MediaGenerationProviderSetting.Zhipu -> when (kind) {
+                MediaKind.IMAGE -> ZhipuImageGeneration(client).buildBody(model, request)
+                MediaKind.VIDEO -> ZhipuVideoGeneration(client).buildCreateBody(model, request)
             }
 
             is MediaGenerationProviderSetting.MiniMax ->

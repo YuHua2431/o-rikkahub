@@ -3,7 +3,12 @@ package me.rerere.rikkahub.ui.components.ai
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeInput
 import dev.chrisbanes.haze.HazeState
@@ -65,6 +70,30 @@ internal fun Modifier.chatInputHaze(
         }
     }
 }
+
+/** 顶栏毛玻璃从顶栏高度的这个比例开始向底部边缘淡出（1f = 完全不淡出） */
+private const val HazeFadeOutStart = 0.6f
+
+/**
+ * 顶栏毛玻璃的下缘淡出蒙版：效果层 alpha 从顶栏顶部到 [HazeFadeOutStart] 保持满效果，
+ * 再向下方边缘线性淡到 0，让模糊和它下面滚过的内容之间没有硬边。
+ *
+ * 只作用在「只画背景效果」的节点上，必须位于 [chatInputHaze] 的外层：
+ * 外层离屏合成把模糊结果画完，再按渐变做 DstIn 削 alpha，所以不会影响上层内容。
+ */
+internal fun Modifier.hazeFadeOutBottom(): Modifier = this
+    .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+    .drawWithContent {
+        drawContent()
+        drawRect(
+            brush = Brush.verticalGradient(
+                0f to Color.White,
+                HazeFadeOutStart to Color.White,
+                1f to Color.Transparent,
+            ),
+            blendMode = BlendMode.DstIn,
+        )
+    }
 
 // Haze 按系统夜间模式选玻璃的明暗预设，应用内单独设置主题时会选错（深色主题下被提亮发白），
 // 所以按应用主题显式写入。深色数值对应库里 internal 的 GlassStyle.regularDark。

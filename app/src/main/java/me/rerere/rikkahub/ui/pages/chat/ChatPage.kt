@@ -3,6 +3,7 @@ package me.rerere.rikkahub.ui.pages.chat
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,7 +50,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dokar.sonner.ToastType
-import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Job
@@ -75,6 +75,7 @@ import me.rerere.rikkahub.service.ChatError
 import me.rerere.rikkahub.ui.components.ai.ChatAttachmentPickerActions
 import me.rerere.rikkahub.ui.components.ai.ChatInput
 import me.rerere.rikkahub.ui.components.ai.chatInputHaze
+import me.rerere.rikkahub.ui.components.ai.hazeFadeOutBottom
 import me.rerere.rikkahub.ui.components.ai.FilesPicker
 import me.rerere.rikkahub.ui.components.ai.SearchMode
 import me.rerere.rikkahub.ui.components.ai.completion.WorkspaceCompletionProvider
@@ -323,25 +324,43 @@ private fun ChatPageContent(
         AssistantBackground(setting = setting, modifier = Modifier.hazeSource(hazeState))
         Scaffold(
             topBar = {
-                TopBar(
-                    settings = setting,
-                    assistant = assistant,
-                    chatModel = currentChatModel,
-                    conversation = conversation,
-                    bigScreen = bigScreen,
-                    hazeState = hazeState,
-                    drawerState = drawerState,
-                    previewMode = previewMode,
-                    onNewChat = {
-                        navigateToChatPage(navController)
-                    },
-                    onClickMenu = {
-                        previewMode = !previewMode
-                    },
-                    onUpdateTitle = {
-                        vm.updateTitle(it)
+                val displaySetting = setting.displaySetting
+                Box {
+                    // 顶栏毛玻璃背景层：只画背景效果并从下缘向上淡出，
+                    // 顶栏内容（标题/按钮）画在它上面，不会被蒙版削弱
+                    if (displaySetting.enableTopBarBlur) {
+                        Box(
+                            modifier = Modifier
+                                .matchParentSize()
+                                .hazeFadeOutBottom()
+                                .chatInputHaze(
+                                    hazeState = hazeState,
+                                    displaySetting = displaySetting,
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                                    shape = RoundedCornerShape(0.dp),
+                                    enabled = true,
+                                ),
+                        )
                     }
-                )
+                    TopBar(
+                        settings = setting,
+                        assistant = assistant,
+                        chatModel = currentChatModel,
+                        conversation = conversation,
+                        bigScreen = bigScreen,
+                        drawerState = drawerState,
+                        previewMode = previewMode,
+                        onNewChat = {
+                            navigateToChatPage(navController)
+                        },
+                        onClickMenu = {
+                            previewMode = !previewMode
+                        },
+                        onUpdateTitle = {
+                            vm.updateTitle(it)
+                        }
+                    )
+                }
             },
             bottomBar = {
                 val messageQueue by vm.messageQueue.collectAsStateWithLifecycle()
@@ -568,7 +587,6 @@ private fun TopBar(
     conversation: Conversation,
     drawerState: DrawerState,
     bigScreen: Boolean,
-    hazeState: HazeState,
     previewMode: Boolean,
     onClickMenu: () -> Unit,
     onNewChat: () -> Unit,
@@ -580,22 +598,8 @@ private fun TopBar(
         onUpdateTitle(it)
     }
 
-    // 顶栏实时模糊：复用输入栏的毛玻璃实现，由独立的「顶栏模糊」开关控制；
-    // 关闭时落回实色容器（消息会从顶栏背后滚过，透明会撞字）
-    val displaySetting = settings.displaySetting
-    val containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-
     TopAppBar(
-        modifier = Modifier.chatInputHaze(
-            hazeState = hazeState,
-            displaySetting = displaySetting,
-            containerColor = containerColor,
-            shape = RoundedCornerShape(0.dp),
-            enabled = displaySetting.enableTopBarBlur,
-        ),
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = if (displaySetting.enableTopBarBlur) Color.Transparent else containerColor,
-        ),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
         navigationIcon = {
             if (!bigScreen) {
                 IconButton(

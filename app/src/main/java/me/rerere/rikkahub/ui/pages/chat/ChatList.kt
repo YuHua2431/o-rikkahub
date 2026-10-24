@@ -291,18 +291,30 @@ private fun ChatListNormal(
         }
 
         ChatFontProvider(displaySetting = settings.displaySetting) {
+            // 顶栏毛玻璃开启时让消息从顶栏背后滚过（顶部留白放进 contentPadding）；
+            // 关闭时保持原样：整列被顶栏高度的 padding 压在下面，不穿过顶栏
+            val topBarBlurEnabled = settings.displaySetting.enableTopBarBlur
             LazyColumn(
                 state = state,
-                // 顶部留白放进 contentPadding，让消息可以滚动到顶栏（毛玻璃）后面
-                contentPadding = PaddingValues(16.dp) + PaddingValues(
-                    top = innerPadding.calculateTopPadding(),
-                    bottom = 32.dp + innerPadding.calculateBottomPadding(),
-                ),
+                contentPadding = if (topBarBlurEnabled) {
+                    PaddingValues(16.dp) + PaddingValues(
+                        top = innerPadding.calculateTopPadding(),
+                        bottom = 32.dp + innerPadding.calculateBottomPadding(),
+                    )
+                } else {
+                    PaddingValues(16.dp) + PaddingValues(
+                        bottom = 32.dp + innerPadding.calculateBottomPadding(),
+                    )
+                },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
                     .fillMaxSize()
-                    .hazeSource(state = hazeState),
+                    .hazeSource(state = hazeState)
+                    .then(
+                        if (topBarBlurEnabled) Modifier
+                        else Modifier.padding(top = innerPadding.calculateTopPadding()),
+                    ),
             ) {
             itemsIndexed(
                 items = conversation.messageNodes,

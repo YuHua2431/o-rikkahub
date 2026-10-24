@@ -11,8 +11,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -49,6 +51,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -56,11 +60,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withLink
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.fastAll
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
+import coil3.request.crossfade
+import coil3.request.placeholder
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.serialization.json.jsonArray
@@ -88,11 +98,14 @@ import me.rerere.rikkahub.ui.components.richtext.buildMarkdownPreviewHtml
 import me.rerere.rikkahub.ui.components.ui.ChainOfThought
 import me.rerere.rikkahub.ui.components.ui.Favicon
 import me.rerere.rikkahub.ui.components.ui.FaviconRow
+import me.rerere.rikkahub.ui.components.ui.ImagePreviewDialog
+import me.rerere.rikkahub.ui.components.ui.LocalExportContext
 import me.rerere.rikkahub.ui.context.LocalNavController
 import me.rerere.rikkahub.ui.modifier.shimmer
 import me.rerere.rikkahub.ui.context.LocalSettings
 import me.rerere.rikkahub.ui.context.LocalWorkspaceId
 import me.rerere.rikkahub.ui.theme.LocalChatFontFamily
+import me.rerere.rikkahub.ui.theme.LocalDarkMode
 import me.rerere.rikkahub.ui.theme.rememberChatFontFamily
 import me.rerere.rikkahub.utils.JsonInstant
 import me.rerere.rikkahub.utils.openUrl
@@ -555,8 +568,90 @@ private fun ChatMessageImage(url: String, modifier: Modifier = Modifier) {
     }
 }
 
+/** 生成图片的显示宽度占当前屏幕横向宽度的比例 */
+private const val GeneratedImageWidthRatio = 0.5f
+
+/** 生成图片按宽高比自适应后的高度上限占屏幕高度的比例，超长的长图按上限收缩 */
+private const val GeneratedImageMaxHeightRatio = 0.8f
+
 /**
- * create_image 的产出：生成中显示「正在生成」占位，完成后和消息里的图片一样展示。
+ * 生成出来的图片：宽取当前屏幕（横屏时同样取横向）宽度的一半，高按图片自身宽高比算；
+ * 自适应高度超过屏幕高度上限的长图按上限收缩，图片始终完整显示。
+ * 宽高比要等图片加载完才知道，加载前先按半屏宽的正方形占位。
+ */
+@Composable
+private fun ChatMessageGeneratedImageItem(url: String) {
+    val context = LocalContext.current
+    val export = LocalExportContext.current
+    val configuration = LocalConfiguration.current
+    val isImageLoading = url.isBlank() || url.matches(Regex("^data:image/[^;]*;base64,\\s*$"))
+    // 图片解码后的实际像素尺寸，用来算宽高比
+    var imagePixelSize by remember(url) { mutableStateOf(IntSize.Zero) }
+    var loading by remember(url) { mutableStateOf(!isImageLoading) }
+    var showPreview by remember { mutableStateOf(false) }
+
+    val halfScreenWidth = (configuration.screenWidthDp * GeneratedImageWidthRatio).dp
+    val heightLimit = (configuration.screenHeightDp * GeneratedImageMaxHeightRatio).dp
+    // 和 ZoomableAsyncImage 一致：导出截图时不能用硬件位图，请求本身固定下来避免每帧重建
+    val placeholder = if (LocalDarkMode.current) R.drawable.placeholder_dark else R.drawable.placeholder
+    val imageRequest = remember(url, export, placeholder, context) {
+        ImageRequest.Builder(context)
+            .data(url)
+            .placeholder(placeholder)
+            .crossfade(false)
+            .allowHardware(!export)
+            .build()
+    }
+
+    BoxWithConstraints {
+        // 气泡/窄栏里可用宽度可能比半屏还窄，取两者较小值免得溢出
+        val widthLimit = minOf(halfScreenWidth, maxWidth)
+        // 宽高比未知时按正方形占位
+        val imageRatio = if (imagePixelSize.width > 0 && imagePixelSize.height > 0) {
+            imagePixelSize.height.toFloat() / imagePixelSize.width
+        } else {
+            1f
+        }
+        val (width, height) = if (widthLimit * imageRatio <= heightLimit) {
+            widthLimit to widthLimit * imageRatio
+        } else {
+            heightLimit / imageRatio to heightLimit
+        }
+        Box(
+            modifier = Modifier
+                .size(width, height)
+                .clip(MaterialTheme.shapes.large)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .shimmer(isLoading = isImageLoading || loading)
+                .then(
+                    if (isImageLoading) Modifier else Modifier.clickable { showPreview = true },
+                ),
+        ) {
+            if (!isImageLoading) {
+                AsyncImage(
+                    model = imageRequest,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Fit,
+                    onLoading = { loading = true },
+                    onSuccess = { success ->
+                        loading = false
+                        val image = success.result.image
+                        imagePixelSize = IntSize(image.width, image.height)
+                    },
+                    onError = { loading = false },
+                )
+            }
+        }
+    }
+
+    if (showPreview) {
+        ImagePreviewDialog(images = listOf(url)) { showPreview = false }
+    }
+}
+
+/**
+ * create_image 的产出：生成中显示「正在生成」占位，完成后按大图展示生成的图片。
  * 开启气泡时图片自己占一个气泡，紧挨着上文模型的回复。
  */
 @Composable
@@ -588,7 +683,7 @@ private fun ChatMessageGeneratedImage(
                     )
                 }
             } else {
-                images.fastForEach { image -> ChatMessageImage(url = image.url) }
+                images.fastForEach { image -> ChatMessageGeneratedImageItem(url = image.url) }
             }
         }
     }

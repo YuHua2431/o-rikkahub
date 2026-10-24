@@ -1362,6 +1362,8 @@ mDNS 주소: .local 호스트네임을 사용하며, IP를 몰라도 같은 네�
   <string name="setting_display_page_background_effect_type">배경 효과 유형</string>
   <string name="setting_display_page_background_effect_blur">블러</string>
   <string name="setting_display_page_background_effect_glass">글래스</string>
+  <string name="setting_display_page_top_bar_blur_title">상단 표시줄 배경 효과</string>
+  <string name="setting_display_page_top_bar_blur_desc">채팅 상단 표시줄을 흐리게 처리해 메시지가 뒤에서 스크롤됩니다 (입력창과 동일한 스타일 사용)</string>
   <string name="safe_mode_enter_app">앱 들어가기</string>
   <string name="setting_tts_page_temperature">Temperature</string>
   <string name="setting_tts_page_temperature_description">음성의 무작위성을 제어합니다 (0.0 - 1.0, 높을수록 더 표현력이 풍부합니다)</string>

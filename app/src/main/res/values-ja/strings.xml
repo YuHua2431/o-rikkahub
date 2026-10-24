@@ -1362,6 +1362,8 @@ mDNSアドレス: .localホスト名を使用し、IPを知らなくても同じ
   <string name="setting_display_page_background_effect_type">背景効果の種類</string>
   <string name="setting_display_page_background_effect_blur">ぼかし</string>
   <string name="setting_display_page_background_effect_glass">ガラス</string>
+  <string name="setting_display_page_top_bar_blur_title">トップバーの背景効果</string>
+  <string name="setting_display_page_top_bar_blur_desc">チャットのトップバーをぼかし、メッセージが背後をスクロールします（入力バーと同じスタイル）</string>
   <string name="safe_mode_enter_app">アプリを開く</string>
   <string name="setting_tts_page_temperature">Temperature</string>
   <string name="setting_tts_page_temperature_description">音声のランダム性を制御します（0.0 - 1.0、大きいほど表現豊かになります）</string>

@@ -21,9 +21,10 @@ import me.rerere.rikkahub.data.datastore.DisplaySetting
 import me.rerere.rikkahub.ui.theme.LocalDarkMode
 
 /**
- * 输入框容器的背景效果（模糊或玻璃），未开启时原样返回。
+ * 输入框容器 / 聊天顶栏的背景效果（模糊或玻璃），未开启时原样返回。
  *
  * 开启后容器本身需要保持透明，[containerColor] 由效果负责铺底和着色。
+ * [enabled] 默认跟随输入栏的开关（displaySetting.enableBlurEffect），聊天顶栏传入自己的开关。
  */
 @Composable
 internal fun Modifier.chatInputHaze(
@@ -31,8 +32,9 @@ internal fun Modifier.chatInputHaze(
     displaySetting: DisplaySetting,
     containerColor: Color,
     shape: RoundedCornerShape,
+    enabled: Boolean = displaySetting.enableBlurEffect,
 ): Modifier {
-    if (!displaySetting.enableBlurEffect) return this
+    if (!enabled) return this
     return when (displaySetting.backgroundEffectType) {
         BackgroundEffectType.BLUR -> hazeBlur(
             input = HazeInput.Sources(hazeState),

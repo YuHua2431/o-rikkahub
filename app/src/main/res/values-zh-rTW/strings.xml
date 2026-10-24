@@ -1360,6 +1360,8 @@
   <string name="setting_display_page_background_effect_type">背景效果類型</string>
   <string name="setting_display_page_background_effect_blur">模糊</string>
   <string name="setting_display_page_background_effect_glass">玻璃</string>
+  <string name="setting_display_page_top_bar_blur_title">頂欄背景效果</string>
+  <string name="setting_display_page_top_bar_blur_desc">讓聊天頂欄即時模糊，訊息從頂欄背後滾過（樣式與輸入欄共用）</string>
   <string name="safe_mode_enter_app">進入應用程式</string>
   <string name="setting_tts_page_temperature">溫度</string>
   <string name="setting_tts_page_temperature_description">控制語音的隨機性（0.0 - 1.0，數值越高越有表現力）</string>

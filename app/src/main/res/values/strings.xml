@@ -1373,6 +1373,8 @@
   <string name="setting_display_page_background_effect_type">Background effect type</string>
   <string name="setting_display_page_background_effect_blur">Blur</string>
   <string name="setting_display_page_background_effect_glass">Glass</string>
+  <string name="setting_display_page_top_bar_blur_title">Top bar background effect</string>
+  <string name="setting_display_page_top_bar_blur_desc">Blur the chat top bar so messages scroll behind it (uses the style chosen for the input bar)</string>
   <string name="skills_page_search_placeholder">Search skills</string>
   <string name="skills_page_search_no_result">No matching skills</string>
   <string name="assistant_page_local_tools_chart_display_title">Chart Display</string>

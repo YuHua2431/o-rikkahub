@@ -1368,6 +1368,8 @@ mDNS 地址：使用 .local 主机名，同一网络中的其他设备可通过�
   <string name="setting_display_page_background_effect_type">背景效果类型</string>
   <string name="setting_display_page_background_effect_blur">模糊</string>
   <string name="setting_display_page_background_effect_glass">玻璃</string>
+  <string name="setting_display_page_top_bar_blur_title">顶栏背景效果</string>
+  <string name="setting_display_page_top_bar_blur_desc">让聊天顶栏实时模糊，消息从顶栏背后滚过（样式与输入栏共用）</string>
   <string name="safe_mode_enter_app">进入应用</string>
   <string name="theme_name_claude">Claude</string>
   <string name="workspace_terminal_tab">终端 %1$d</string>

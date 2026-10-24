@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dokar.sonner.ToastType
+import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Job
@@ -72,6 +74,7 @@ import me.rerere.rikkahub.data.repository.WorkspaceRepository
 import me.rerere.rikkahub.service.ChatError
 import me.rerere.rikkahub.ui.components.ai.ChatAttachmentPickerActions
 import me.rerere.rikkahub.ui.components.ai.ChatInput
+import me.rerere.rikkahub.ui.components.ai.chatInputHaze
 import me.rerere.rikkahub.ui.components.ai.FilesPicker
 import me.rerere.rikkahub.ui.components.ai.SearchMode
 import me.rerere.rikkahub.ui.components.ai.completion.WorkspaceCompletionProvider
@@ -326,6 +329,7 @@ private fun ChatPageContent(
                     chatModel = currentChatModel,
                     conversation = conversation,
                     bigScreen = bigScreen,
+                    hazeState = hazeState,
                     drawerState = drawerState,
                     previewMode = previewMode,
                     onNewChat = {
@@ -564,6 +568,7 @@ private fun TopBar(
     conversation: Conversation,
     drawerState: DrawerState,
     bigScreen: Boolean,
+    hazeState: HazeState,
     previewMode: Boolean,
     onClickMenu: () -> Unit,
     onNewChat: () -> Unit,
@@ -575,8 +580,22 @@ private fun TopBar(
         onUpdateTitle(it)
     }
 
+    // 顶栏实时模糊：复用输入栏的毛玻璃实现，由独立的「顶栏模糊」开关控制；
+    // 关闭时落回实色容器（消息会从顶栏背后滚过，透明会撞字）
+    val displaySetting = settings.displaySetting
+    val containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+
     TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+        modifier = Modifier.chatInputHaze(
+            hazeState = hazeState,
+            displaySetting = displaySetting,
+            containerColor = containerColor,
+            shape = RoundedCornerShape(0.dp),
+            enabled = displaySetting.enableTopBarBlur,
+        ),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = if (displaySetting.enableTopBarBlur) Color.Transparent else containerColor,
+        ),
         navigationIcon = {
             if (!bigScreen) {
                 IconButton(

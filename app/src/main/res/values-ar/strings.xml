@@ -807,6 +807,8 @@
   <string name="setting_display_page_skip_crop_image_desc">تخطي واجهة الاقتصاص بعد استيراد الصور أو التقاطها</string>
   <string name="setting_display_page_skip_crop_image_title">تخطي تعديل الصور</string>
   <string name="setting_display_page_title">إعدادات العرض</string>
+  <string name="setting_display_page_top_bar_blur_desc">يضبط شريط الدردشة العلوي بحيث تمر الرسائل خلفه (بنفس النمط المستخدم لشريط الإدخال)</string>
+  <string name="setting_display_page_top_bar_blur_title">تأثير خلفية الشريط العلوي</string>
   <string name="setting_display_page_tts_only_read_quoted_desc">عند التمكين، سيقرأ TTS المحتوى الواقع بين علامات الاقتباس فقط (بما في ذلك \" \", \' \', “”, ‘’, 「」, 『』)</string>
   <string name="setting_display_page_tts_only_read_quoted_title">قراءة TTS للمحتوى المقتبس فقط</string>
   <string name="setting_display_page_tts_read_outside_brackets_desc">عند التمكين، لن يقرأ TTS المحتوى الموجود داخل الأقواس</string>

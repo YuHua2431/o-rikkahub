@@ -45,8 +45,6 @@ icons and UI style of the 2.5.6 era — old look, new capabilities.
 > [!IMPORTANT]
 > This project is developed with vibe coding, powered by DeepSeek V4.1 1017 and Mimo V2.6 Pro.
 
-This project is developed using [Android Studio](https://developer.android.com/studio).
-
 Technology stack documentation:
 
 - [Kotlin](https://kotlinlang.org/) (Development language)

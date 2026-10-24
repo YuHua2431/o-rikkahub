@@ -19,9 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.rerere.ai.provider.Model
@@ -46,6 +44,7 @@ import me.rerere.rikkahub.ui.hooks.writeStringPreference
 import me.rerere.rikkahub.ui.hooks.ChatInputState
 import me.rerere.rikkahub.utils.UiState
 import me.rerere.rikkahub.utils.UpdateChecker
+import me.rerere.rikkahub.utils.UpdateInfo
 import me.rerere.rikkahub.web.ApiException
 import java.util.Locale
 import kotlin.uuid.Uuid
@@ -203,21 +202,11 @@ class ChatVM(
         }
     }
 
-    // Update checker
-    val updateState = settingsStore.settingsFlow
-        .map { settings ->
-            !settings.init &&
-                settings.displaySetting.updateCheckDisabledUntilEpochMillis <= System.currentTimeMillis()
-        }
-        .distinctUntilChanged()
-        .flatMapLatest { enabled ->
-            if (enabled) updateChecker.updateState else flowOf(UiState.Loading)
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-            UiState.Loading,
-        )
+    // 自动更新检测已停用（2.5.6.1 fan 版）：updateState 恒为 Loading，永不 collect updateChecker.updateState，
+    // 而 UpdateChecker.updateState 以 SharingStarted.Lazily 启动，无人订阅即不会发起网络请求。
+    // UpdateChecker / UpdateCard / DI 注册按用户要求原样保留为无用代码。
+    val updateState: StateFlow<UiState<UpdateInfo>> = flowOf(UiState.Loading)
+        .stateIn(viewModelScope, SharingStarted.Lazily, UiState.Loading)
 
     /**
      * 处理消息发送

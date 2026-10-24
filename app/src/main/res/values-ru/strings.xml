@@ -1052,6 +1052,16 @@
   <string name="translator_page_result_placeholder">Результат перевода будет показан здесь</string>
   <string name="translator_page_title">Переводчик</string>
   <string name="translator_page_translate">Перевести</string>
+  <string name="translator_page_error">Ошибка перевода</string>
+  <string name="translator_page_model_missing">Модель перевода не выбрана. Нажмите в правом верхнем углу, чтобы выбрать её.</string>
+  <string name="translator_page_char_count">%1$d символов</string>
+  <string name="translator_page_clear_input">Очистить ввод</string>
+  <string name="translator_page_paste">Вставить</string>
+  <string name="translator_page_use_as_input">Использовать как ввод</string>
+  <string name="translator_page_history">История переводов</string>
+  <string name="translator_page_clear_history">Очистить</string>
+  <string name="translator_page_clear_history_title">Очистить историю переводов</string>
+  <string name="translator_page_clear_history_message">Все записи перевода будут удалены. Это действие нельзя отменить.</string>
   <string name="tts">TTS</string>
   <string name="unpin_chat">Открепить чат</string>
   <string name="update_card_check_failed">Проверка обновления не удалась</string>

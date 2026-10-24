@@ -58,10 +58,12 @@ import me.rerere.hugeicons.stroke.InLove
 import me.rerere.hugeicons.stroke.LookTop
 import me.rerere.hugeicons.stroke.McpServer
 import me.rerere.hugeicons.stroke.Megaphone01
+import me.rerere.hugeicons.stroke.Moon02
 import me.rerere.hugeicons.stroke.Package
 import me.rerere.hugeicons.stroke.ServerStack01
 import me.rerere.hugeicons.stroke.Settings03
 import me.rerere.hugeicons.stroke.Share04
+import me.rerere.hugeicons.stroke.SmartPhone01
 import me.rerere.hugeicons.stroke.Sun01
 import me.rerere.hugeicons.stroke.Tiktok
 import me.rerere.hugeicons.stroke.WavingHand01
@@ -71,6 +73,7 @@ import me.rerere.rikkahub.data.datastore.isNotConfigured
 import me.rerere.rikkahub.data.files.FilesManager
 import me.rerere.rikkahub.ui.components.nav.BackButton
 import me.rerere.rikkahub.ui.components.ui.CardGroup
+import me.rerere.rikkahub.ui.components.ui.CardGroupIcon
 import me.rerere.rikkahub.ui.components.ui.Select
 import me.rerere.rikkahub.ui.components.ui.icons.DiscordIcon
 import me.rerere.rikkahub.ui.components.ui.icons.TencentQQIcon
@@ -148,6 +151,8 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
 
             item("generalSettings") {
                 var colorMode by rememberColorMode()
+                val containerColor = MaterialTheme.colorScheme.primaryContainer
+                val contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 val selectedColorModeText = when (colorMode) {
                     ColorMode.SYSTEM -> stringResource(R.string.setting_page_color_mode_system)
                     ColorMode.LIGHT -> stringResource(R.string.setting_page_color_mode_light)
@@ -158,7 +163,17 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
                     title = { Text(stringResource(R.string.setting_page_general_settings)) },
                 ) {
                     item(
-                        leadingContent = { Icon(HugeIcons.Sun01, null) },
+                        leadingContent = {
+                            CardGroupIcon(
+                                when (colorMode) {
+                                    ColorMode.SYSTEM -> HugeIcons.SmartPhone01
+                                    ColorMode.LIGHT -> HugeIcons.Sun01
+                                    ColorMode.DARK -> HugeIcons.Moon02
+                                },
+                                containerColor = containerColor,
+                                contentColor = contentColor,
+                            )
+                        },
                         trailingContent = {
                             Select(
                                 options = ColorMode.entries,
@@ -186,19 +201,19 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingPreferences) },
-                        leadingContent = { Icon(HugeIcons.Settings03, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Settings03, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_preferences_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_preferences)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.Assistant) },
-                        leadingContent = { Icon(HugeIcons.LookTop, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.LookTop, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_assistant_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_assistant)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.Extensions) },
-                        leadingContent = { Icon(HugeIcons.Package, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Package, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_extensions_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_extensions)) },
                     )
@@ -206,49 +221,51 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
             }
 
             item("modelServices") {
+                val containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                val contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                 CardGroup(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     title = { Text(stringResource(R.string.setting_page_model_and_services)) },
                 ) {
                     item(
                         onClick = { navController.navigate(Screen.SettingModels) },
-                        leadingContent = { Icon(HugeIcons.AiMagic, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.AiMagic, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_default_model_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_default_model)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingProvider) },
-                        leadingContent = { Icon(HugeIcons.Brain02, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Brain02, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_providers_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_providers)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingSearch) },
-                        leadingContent = { Icon(HugeIcons.GlobalSearch, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.GlobalSearch, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_search_service_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_search_service)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingSpeech) },
-                        leadingContent = { Icon(HugeIcons.Megaphone01, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Megaphone01, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_tts_service_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_tts_service)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingMedia) },
-                        leadingContent = { Icon(HugeIcons.Image02, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Image02, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_media_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_media)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingMcp) },
-                        leadingContent = { Icon(HugeIcons.McpServer, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.McpServer, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_mcp_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_mcp)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingWeb) },
-                        leadingContent = { Icon(HugeIcons.ServerStack01, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.ServerStack01, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_web_server_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_web_server)) },
                     )
@@ -259,19 +276,21 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
                 val storageState by produceState(-1 to 0L) {
                     value = filesManager.countChatFiles()
                 }
+                val containerColor = MaterialTheme.colorScheme.secondaryContainer
+                val contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 CardGroup(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     title = { Text(stringResource(R.string.setting_page_data_settings)) },
                 ) {
                     item(
                         onClick = { navController.navigate(Screen.Backup) },
-                        leadingContent = { Icon(HugeIcons.Database02, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Database02, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_data_backup_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_data_backup)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingFiles) },
-                        leadingContent = { Icon(HugeIcons.ImageUpload, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.ImageUpload, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = {
                             if (storageState.first == -1) {
                                 Text(stringResource(R.string.calculating))
@@ -295,13 +314,15 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
                 val shareText = stringResource(R.string.setting_page_share_text)
                 val share = stringResource(R.string.setting_page_share)
                 val noShareApp = stringResource(R.string.setting_page_no_share_app)
+                val containerColor = MaterialTheme.colorScheme.primaryContainer
+                val contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 CardGroup(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     title = { Text(stringResource(R.string.setting_page_about)) },
                 ) {
                     item(
                         onClick = { navController.navigate(Screen.SettingAbout) },
-                        leadingContent = { Icon(HugeIcons.Clapping01, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Clapping01, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_about_desc)) },
                         trailingContent = {
                             Row(
@@ -347,19 +368,19 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
                             }
                             context.openUrl(docUrl)
                         },
-                        leadingContent = { Icon(HugeIcons.Book01, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Book01, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_documentation_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_documentation)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.Log) },
-                        leadingContent = { Icon(HugeIcons.Bookshelf01, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Bookshelf01, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_request_logs_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_request_logs)) },
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingDonate) },
-                        leadingContent = { Icon(HugeIcons.InLove, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.InLove, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_donate_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_donate)) },
                     )
@@ -374,7 +395,7 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
                                 Toast.makeText(context, noShareApp, Toast.LENGTH_SHORT).show()
                             }
                         },
-                        leadingContent = { Icon(HugeIcons.Share04, null) },
+                        leadingContent = { CardGroupIcon(HugeIcons.Share04, containerColor = containerColor, contentColor = contentColor) },
                         supportingContent = { Text(stringResource(R.string.setting_page_share_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_share)) },
                     )

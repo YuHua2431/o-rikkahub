@@ -1050,6 +1050,16 @@
   <string name="translator_page_result_placeholder">翻譯結果將顯示在這裡</string>
   <string name="translator_page_title">翻譯</string>
   <string name="translator_page_translate">翻譯</string>
+  <string name="translator_page_error">翻譯失敗</string>
+  <string name="translator_page_model_missing">未選擇翻譯模型。請輕觸右上角選擇一個。</string>
+  <string name="translator_page_char_count">%1$d 個字元</string>
+  <string name="translator_page_clear_input">清除輸入</string>
+  <string name="translator_page_paste">貼上</string>
+  <string name="translator_page_use_as_input">用作輸入</string>
+  <string name="translator_page_history">翻譯歷史</string>
+  <string name="translator_page_clear_history">清除</string>
+  <string name="translator_page_clear_history_title">清除翻譯記錄</string>
+  <string name="translator_page_clear_history_message">所有翻譯記錄將被刪除。此操作無法復原。</string>
   <string name="tts">語音</string>
   <string name="unpin_chat">取消釘選聊天</string>
   <string name="update_card_check_failed">檢查更新失敗</string>

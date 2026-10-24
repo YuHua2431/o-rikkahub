@@ -107,6 +107,10 @@ val dataSourceModule = module {
     }
 
     single {
+        get<AppDatabase>().translationHistoryDao()
+    }
+
+    single {
         get<AppDatabase>().usageRecordDao()
     }
 

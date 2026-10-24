@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
@@ -29,8 +28,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import me.rerere.hugeicons.HugeIcons
-import me.rerere.hugeicons.stroke.ArrowRight01
 import me.rerere.rikkahub.R
 import me.rerere.rikkahub.data.datastore.DisplaySetting
 import me.rerere.rikkahub.ui.components.nav.BackButton
@@ -40,9 +37,7 @@ import me.rerere.rikkahub.ui.components.ui.permission.PermissionNotification
 import me.rerere.rikkahub.ui.components.ui.permission.rememberPermissionState
 import me.rerere.rikkahub.ui.theme.CustomColors
 import me.rerere.rikkahub.utils.plus
-import me.rerere.rikkahub.utils.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
-import java.time.Instant
 
 private val UPDATE_PAUSE_DAY_OPTIONS = listOf(7, 14, 21)
 private const val MILLIS_PER_DAY = 24 * 60 * 60 * 1_000L
@@ -95,29 +90,6 @@ fun SettingPreferencesNotificationPage(vm: SettingVM = koinViewModel()) {
                 CardGroup(
                     modifier = Modifier.padding(horizontal = 8.dp),
                 ) {
-                    item(
-                        onClick = {
-                            selectedUpdatePauseDays = UPDATE_PAUSE_DAY_OPTIONS.first()
-                            showUpdatePauseDialog = true
-                        },
-                        headlineContent = { Text(stringResource(R.string.setting_display_page_show_updates_title)) },
-                        supportingContent = {
-                            Text(
-                                if (updateChecksEnabled) {
-                                    stringResource(R.string.setting_update_reminder_enabled)
-                                } else {
-                                    stringResource(
-                                        R.string.setting_update_reminder_paused_until,
-                                        Instant.ofEpochMilli(displaySetting.updateCheckDisabledUntilEpochMillis)
-                                            .toLocalDateTime(),
-                                    )
-                                }
-                            )
-                        },
-                        trailingContent = {
-                            Icon(HugeIcons.ArrowRight01, contentDescription = null)
-                        },
-                    )
                     item(
                         headlineContent = { Text(stringResource(R.string.setting_display_page_notification_message_generated)) },
                         supportingContent = { Text(stringResource(R.string.setting_display_page_notification_message_generated_desc)) },

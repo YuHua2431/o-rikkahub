@@ -5,10 +5,12 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/rikkahub/rikkahub)
 [![Ask DeepWiki](https://img.shields.io/badge/zread.ai-blue?style=flat&logo=readthedocs)](https://zread.ai/rikkahub/rikkahub)
 
+The DeepWiki and zread.ai badges above link to documentation of the original RikkaHub project.
+
 A native Android LLM chat client that supports switching between different providers for
 conversations 🤖💬
 
-Click to join our Discord server 👉 [【RikkaHub】](https://discord.gg/9weBqxe5c4)
+Click to join the original author's Discord server 👉 [【RikkaHub】](https://discord.gg/9weBqxe5c4)
 
 [简体中文](README_ZH_CN.md) | [繁體中文](README_ZH_TW.md) | English
 </div>
@@ -20,8 +22,9 @@ Click to join our Discord server 👉 [【RikkaHub】](https://discord.gg/9weBqx
 
 ## 🧩 Changes
 
-This project is based on RikkaHub **2.5.6**. It adds the **3.x** feature set while keeping the classic
-icons and UI style of the 2.5.6 era — old look, new capabilities.
+This project is based on RikkaHub **2.5.6** ([original repository](https://github.com/rikkahub/rikkahub)).
+It adds the **3.x** feature set while keeping the classic icons and UI style of the 2.5.6 era — old
+look, new capabilities.
 
 ### Ported from 3.x
 

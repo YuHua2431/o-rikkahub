@@ -20,11 +20,12 @@ Click to join our Discord server 👉 [【RikkaHub】](https://discord.gg/9weBqx
 
 ## 🧩 Changes
 
-This project is based on RikkaHub **2.5.6**. It ports the **3.1.0** feature set back onto it while
-keeping the classic icons and UI style of the 2.5.6 era — old look, new capabilities.
+This project is based on RikkaHub **2.5.6**. It adds the **3.x** feature set while keeping the classic
+icons and UI style of the 2.5.6 era — old look, new capabilities.
 
-### Ported from 3.1.0
+### Ported from 3.x
 
+- Settings icon style
 - Media generation (the `mediagen` module: image and video generation)
 - Conversation refactor (agent layer, ConversationSession, ChatService alignment)
 - Checkpoint compression
@@ -36,16 +37,8 @@ keeping the classic icons and UI style of the 2.5.6 era — old look, new capabi
 
 ### Added by this fork
 
-- AI translation: brand new UI, translation history, persistent target language
-- Split sidebar entries for media creation and AI translation
-- Local tool `create_image`: the model can generate images that appear directly in the chat, with
-  reference image support (images generated earlier in the conversation or images you sent)
-- Zhipu media provider (CogView / CogVideoX)
-- Real-time blurred chat top bar (independent toggle; upper half blurred with a bottom-half gradient,
-  off by default so the original look is preserved)
-- Enlarged generated images (half screen width, aspect-ratio aware)
-- New settings icon style and grouped preference sections
-- Automatic update check removed
+- Sidebar entries for AI translation and media generation
+- A new image generation skill: the model can generate images on its own
 
 ## ✨ Development
 

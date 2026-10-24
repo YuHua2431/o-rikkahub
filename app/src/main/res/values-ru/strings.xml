@@ -1376,6 +1376,8 @@
   <string name="skills_page_search_no_result">Нет подходящих навыков</string>
   <string name="assistant_page_local_tools_chart_display_title">Отображение диаграмм</string>
   <string name="assistant_page_local_tools_chart_display_desc">Разрешить ИИ отображать линейные, столбчатые и точечные диаграммы</string>
+  <string name="assistant_page_local_tools_image_generation_title">Создание изображения</string>
+  <string name="assistant_page_local_tools_image_generation_desc">Позвольте ИИ создавать изображения с помощью модели из «Создания медиа»</string>
   <string name="chat_message_tool_chart_display">Показать диаграмму</string>
   <string name="chat_message_tool_chart_display_with_title">Показать диаграмму: %1$s</string>
   <string name="chart_mode_chart">Диаграмма</string>

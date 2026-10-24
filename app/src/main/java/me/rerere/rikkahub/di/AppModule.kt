@@ -32,7 +32,15 @@ val appModule = module {
     }
 
     single {
-        LocalTools(get(), get(), get(), get())
+        LocalTools(
+            context = get(),
+            eventBus = get(),
+            ttsManager = get(),
+            settingsStore = get(),
+            mediaGenerationManager = get(),
+            filesManager = get(),
+            okHttpClient = get(),
+        )
     }
 
     single {

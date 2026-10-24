@@ -1374,6 +1374,8 @@
   <string name="skills_page_search_no_result">找不到符合的技能</string>
   <string name="assistant_page_local_tools_chart_display_title">圖表顯示</string>
   <string name="assistant_page_local_tools_chart_display_desc">讓 AI 顯示折線圖、長條圖和散佈圖</string>
+  <string name="assistant_page_local_tools_image_generation_title">創作圖片</string>
+  <string name="assistant_page_local_tools_image_generation_desc">讓 AI 用媒體創作裡設定好的圖像模型生成圖片</string>
   <string name="chat_message_tool_chart_display">顯示圖表</string>
   <string name="chat_message_tool_chart_display_with_title">顯示圖表：%1$s</string>
   <string name="chart_mode_chart">圖表</string>

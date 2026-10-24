@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.rerere.rikkahub.data.ai.TranslationHandler
@@ -45,9 +46,10 @@ class TranslatorVM(
     private val _translatedText = MutableStateFlow("")
     val translatedText: StateFlow<String> = _translatedText
 
-    // 翻译目标语言
-    private val _targetLanguage = MutableStateFlow(Locale.SIMPLIFIED_CHINESE)
-    val targetLanguage: StateFlow<Locale> = _targetLanguage
+    // 翻译目标语言，保存在设置里，重启后保留
+    val targetLanguage: StateFlow<Locale> = settings
+        .map { Locale.forLanguageTag(it.translateTargetLanguage) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, Locale.SIMPLIFIED_CHINESE)
 
     // 翻译历史，按时间倒序分页加载
     val history: Flow<PagingData<TranslationHistoryEntity>> = Pager(
@@ -72,7 +74,7 @@ class TranslatorVM(
     }
 
     fun updateTargetLanguage(language: Locale) {
-        _targetLanguage.value = language
+        updateSettings(settings.value.copy(translateTargetLanguage = language.toLanguageTag()))
     }
 
     // 把翻译结果放回输入框，方便接着改或反向翻译
@@ -85,7 +87,7 @@ class TranslatorVM(
         cancelTranslation()
         _inputText.value = entry.sourceText
         _translatedText.value = entry.translatedText
-        _targetLanguage.value = Locale.forLanguageTag(entry.targetLanguage)
+        updateSettings(settings.value.copy(translateTargetLanguage = entry.targetLanguage))
     }
 
     fun deleteHistory(entry: TranslationHistoryEntity) {

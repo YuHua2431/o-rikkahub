@@ -2,15 +2,21 @@ package me.rerere.rikkahub.data.ai.tools.local
 
 import android.content.Context
 import me.rerere.ai.core.Tool
+import me.rerere.mediagen.provider.MediaGenerationManager
 import me.rerere.rikkahub.data.datastore.SettingsStore
 import me.rerere.rikkahub.data.event.AppEventBus
+import me.rerere.rikkahub.data.files.FilesManager
 import me.rerere.tts.provider.TTSManager
+import okhttp3.OkHttpClient
 
 class LocalTools(
     private val context: Context,
     private val eventBus: AppEventBus,
     private val ttsManager: TTSManager,
     private val settingsStore: SettingsStore,
+    private val mediaGenerationManager: MediaGenerationManager,
+    private val filesManager: FilesManager,
+    private val okHttpClient: OkHttpClient,
 ) {
     val javascriptTool by lazy { buildJavascriptTool() }
 
@@ -29,6 +35,10 @@ class LocalTools(
     val calendarCreateTool by lazy { buildCalendarCreateTool(context) }
 
     val chartDisplayTool by lazy { buildChartDisplayTool() }
+
+    val imageGenerationTool by lazy {
+        buildImageGenerationTool(mediaGenerationManager, filesManager, okHttpClient, settingsStore)
+    }
 
     fun getTools(options: List<LocalToolOption>): List<Tool> {
         val tools = mutableListOf<Tool>()
@@ -56,6 +66,9 @@ class LocalTools(
         }
         if (options.contains(LocalToolOption.ChartDisplay)) {
             tools.add(chartDisplayTool)
+        }
+        if (options.contains(LocalToolOption.ImageGeneration)) {
+            tools.add(imageGenerationTool)
         }
         return tools
     }

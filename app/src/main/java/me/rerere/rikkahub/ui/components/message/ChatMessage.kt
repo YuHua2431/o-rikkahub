@@ -332,7 +332,7 @@ private fun MessagePartsBlock(
     }
 
     // Render parts in original order (group thinking/tool as chain-of-thought)
-    val groupedParts = remember(parts) { parts.groupMessageParts() }
+    val groupedParts = remember(parts, loading) { parts.groupMessageParts(loading) }
     groupedParts.fastForEach { block ->
         when (block) {
             is MessagePartBlock.ThinkingBlock -> {
@@ -383,6 +383,15 @@ private fun MessagePartsBlock(
             is MessagePartBlock.ChartBlock -> key(block.index) {
                 val spec = remember(block.tool.input) { ChartSpec.fromJson(block.tool.inputAsJson()) }
                 spec?.let { ChartCard(spec = it) }
+            }
+
+            is MessagePartBlock.GeneratedImageBlock -> key(block.index) {
+                ChatMessageGeneratedImage(
+                    tool = block.tool,
+                    bubble = settings.displaySetting.showAssistantBubble,
+                    bubbleColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                        .copy(alpha = settings.displaySetting.bubbleOpacity),
+                )
             }
 
             is MessagePartBlock.ContentBlock -> key(block.index) {
@@ -467,25 +476,7 @@ private fun MessagePartsBlock(
                     }
 
                     is UIMessagePart.Image -> {
-                        val isImageLoading =
-                            part.url.isBlank() || part.url.matches(Regex("^data:image/[^;]*;base64,\\s*$"))
-                        if (isImageLoading) {
-                            Box(
-                                modifier = Modifier
-                                    .size(72.dp)
-                                    .clip(MaterialTheme.shapes.large)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                                    .shimmer(isLoading = true)
-                            )
-                        } else {
-                            ZoomableAsyncImage(
-                                model = part.url,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .clip(MaterialTheme.shapes.large)
-                                    .height(72.dp)
-                            )
-                        }
+                        ChatMessageImage(url = part.url)
                     }
 
                     is UIMessagePart.Document -> {
@@ -533,6 +524,78 @@ private fun MessagePartsBlock(
     // Annotations (always rendered at the end)
     if (annotations.isNotEmpty()) {
         ChatMessageCitations(annotations = annotations)
+    }
+}
+
+/** 消息里图片的展示高度 */
+private val ChatMessageImageHeight = 72.dp
+
+/**
+ * 消息正文里的图片：还没有地址时显示占位骨架，有地址时显示可点开预览的图。
+ */
+@Composable
+private fun ChatMessageImage(url: String, modifier: Modifier = Modifier) {
+    val isImageLoading = url.isBlank() || url.matches(Regex("^data:image/[^;]*;base64,\\s*$"))
+    if (isImageLoading) {
+        Box(
+            modifier = modifier
+                .size(ChatMessageImageHeight)
+                .clip(MaterialTheme.shapes.large)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .shimmer(isLoading = true)
+        )
+    } else {
+        ZoomableAsyncImage(
+            model = url,
+            contentDescription = null,
+            modifier = modifier
+                .clip(MaterialTheme.shapes.large)
+                .height(ChatMessageImageHeight)
+        )
+    }
+}
+
+/**
+ * create_image 的产出：生成中显示「正在生成」占位，完成后和消息里的图片一样展示。
+ * 开启气泡时图片自己占一个气泡，紧挨着上文模型的回复。
+ */
+@Composable
+private fun ChatMessageGeneratedImage(
+    tool: UIMessagePart.Tool,
+    bubble: Boolean,
+    bubbleColor: Color,
+) {
+    val images = remember(tool) { tool.output.filterIsInstance<UIMessagePart.Image>() }
+    val content: @Composable () -> Unit = {
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            if (images.isEmpty()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(ChatMessageImageHeight)
+                            .clip(MaterialTheme.shapes.large)
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .shimmer(isLoading = true)
+                    )
+                    Text(
+                        text = stringResource(R.string.media_creation_status_running),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.shimmer(isLoading = true),
+                    )
+                }
+            } else {
+                images.fastForEach { image -> ChatMessageImage(url = image.url) }
+            }
+        }
+    }
+    if (bubble) {
+        ChatMessageBubble(role = MessageRole.ASSISTANT, color = bubbleColor) { content() }
+    } else {
+        content()
     }
 }
 

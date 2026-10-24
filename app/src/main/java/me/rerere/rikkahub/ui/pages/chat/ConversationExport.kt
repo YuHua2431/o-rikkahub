@@ -550,7 +550,7 @@ private fun ExportedChatMessage(
         model?.displayName?.isNotBlank() == true -> model.displayName
         else -> "AI"
     }
-    val groupedParts = remember(parts) { parts.groupMessageParts() }
+    val groupedParts = remember(parts) { parts.groupMessageParts(generating = false) }
     val messageContent: @Composable () -> Unit = {
         Column(
             modifier = Modifier
@@ -592,6 +592,24 @@ private fun ExportedChatMessage(
                     is MessagePartBlock.ChartBlock -> {
                         val spec = remember(block.tool.input) { ChartSpec.fromJson(block.tool.inputAsJson()) }
                         spec?.let { ChartCard(spec = it) }
+                    }
+
+                    is MessagePartBlock.GeneratedImageBlock -> {
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            block.tool.output.filterIsInstance<UIMessagePart.Image>().forEach { image ->
+                                AsyncImage(
+                                    model = ImageRequest.Builder(context)
+                                        .data(image.url)
+                                        .allowHardware(false)
+                                        .crossfade(false)
+                                        .build(),
+                                    contentDescription = "Image",
+                                    modifier = Modifier
+                                        .sizeIn(maxHeight = 300.dp)
+                                        .clip(RoundedCornerShape(12.dp)),
+                                )
+                            }
+                        }
                     }
 
                     is MessagePartBlock.ContentBlock -> {

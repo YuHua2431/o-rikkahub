@@ -1377,6 +1377,8 @@
   <string name="skills_page_search_no_result">No matching skills</string>
   <string name="assistant_page_local_tools_chart_display_title">Chart Display</string>
   <string name="assistant_page_local_tools_chart_display_desc">Let the AI display line, bar, and scatter charts</string>
+  <string name="assistant_page_local_tools_image_generation_title">Create Image</string>
+  <string name="assistant_page_local_tools_image_generation_desc">Let the AI create images with the image model configured in Media Creation</string>
   <string name="chat_message_tool_chart_display">Display chart</string>
   <string name="chat_message_tool_chart_display_with_title">Display chart: %1$s</string>
   <string name="chart_mode_chart">Chart</string>

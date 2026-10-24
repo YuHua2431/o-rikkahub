@@ -1374,6 +1374,8 @@
   <string name="skills_page_search_no_result">لا توجد مهارات مطابقة</string>
   <string name="assistant_page_local_tools_chart_display_title">عرض الرسم البياني</string>
   <string name="assistant_page_local_tools_chart_display_desc">السماح للذكاء الاصطناعي بعرض المخططات الخطية والشريطية والمبعثرة</string>
+  <string name="assistant_page_local_tools_image_generation_title">إنشاء صورة</string>
+  <string name="assistant_page_local_tools_image_generation_desc">اسمح للذكاء الاصطناعي بإنشاء صور باستخدام نموذج الصور المهيَّأ في إنشاء الوسائط</string>
   <string name="chat_message_tool_chart_display">عرض المخطط</string>
   <string name="chat_message_tool_chart_display_with_title">عرض المخطط: %1$s</string>
   <string name="chart_mode_chart">مخطط</string>

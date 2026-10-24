@@ -129,6 +129,7 @@ class SettingsStore(
         val TITLE_PROMPT = stringPreferencesKey("title_prompt")
         val TRANSLATION_PROMPT = stringPreferencesKey("translation_prompt")
         val TRANSLATE_THINKING_BUDGET = intPreferencesKey("translate_thinking_budget")
+        val TRANSLATE_TARGET_LANGUAGE = stringPreferencesKey("translate_target_language")
         val SUGGESTION_PROMPT = stringPreferencesKey("suggestion_prompt")
         val OCR_MODEL = stringPreferencesKey("ocr_model")
         val OCR_PROMPT = stringPreferencesKey("ocr_prompt")
@@ -215,6 +216,7 @@ class SettingsStore(
                 preferences[TITLE_PROMPT] = settings.titlePrompt
                 preferences[TRANSLATION_PROMPT] = settings.translatePrompt
                 preferences[TRANSLATE_THINKING_BUDGET] = settings.translateThinkingBudget
+                preferences[TRANSLATE_TARGET_LANGUAGE] = settings.translateTargetLanguage
                 preferences[SUGGESTION_PROMPT] = settings.suggestionPrompt
                 preferences[OCR_MODEL] = settings.ocrModelId.toString()
                 preferences[OCR_PROMPT] = settings.ocrPrompt
@@ -290,6 +292,8 @@ class SettingsStore(
                 titlePrompt = preferences[TITLE_PROMPT] ?: DEFAULT_TITLE_PROMPT,
                 translatePrompt = preferences[TRANSLATION_PROMPT] ?: DEFAULT_TRANSLATION_PROMPT,
                 translateThinkingBudget = preferences[TRANSLATE_THINKING_BUDGET] ?: 0,
+                // 旧版本没有这个 key, 缺省与 Settings 的默认值保持一致
+                translateTargetLanguage = preferences[TRANSLATE_TARGET_LANGUAGE] ?: "zh-CN",
                 suggestionPrompt = preferences[SUGGESTION_PROMPT] ?: DEFAULT_SUGGESTION_PROMPT,
                 ocrModelId = preferences[OCR_MODEL]?.let { Uuid.parse(it) } ?: Uuid.random(),
                 ocrPrompt = preferences[OCR_PROMPT] ?: DEFAULT_OCR_PROMPT,
@@ -609,6 +613,8 @@ data class Settings(
     val translateModeId: Uuid = Uuid.random(),
     val translatePrompt: String = DEFAULT_TRANSLATION_PROMPT,
     val translateThinkingBudget: Int = 0,
+    // 翻译页的目标语言, 存 BCP 47 语言标签 (默认与 3.1.0 一致)
+    val translateTargetLanguage: String = "zh-CN",
     val enableSuggestion: Boolean = true,
     val suggestionPrompt: String = DEFAULT_SUGGESTION_PROMPT,
     val ocrModelId: Uuid = Uuid.random(),
